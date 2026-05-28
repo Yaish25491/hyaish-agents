@@ -14,6 +14,79 @@ echo "📁 Repository: $REPO_DIR"
 echo "📁 Claude agents directory: $CLAUDE_AGENTS_DIR"
 echo ""
 
+# Check prerequisites
+echo "🔍 Checking prerequisites..."
+echo ""
+
+MISSING_TOOLS=()
+
+# Check git (required)
+if ! command -v git &> /dev/null; then
+  MISSING_TOOLS+=("git")
+fi
+
+# Check jira CLI (jira-rh or jira-cli)
+if ! command -v jira-rh &> /dev/null && ! command -v jira &> /dev/null; then
+  MISSING_TOOLS+=("jira-rh OR jira-cli")
+fi
+
+# Check gh (GitHub CLI)
+if ! command -v gh &> /dev/null; then
+  MISSING_TOOLS+=("gh")
+fi
+
+if [ ${#MISSING_TOOLS[@]} -gt 0 ]; then
+  echo "❌ Missing required tools:"
+  echo ""
+  for tool in "${MISSING_TOOLS[@]}"; do
+    echo "  • $tool"
+  done
+  echo ""
+  echo "Installation instructions:"
+  echo ""
+
+  if [[ " ${MISSING_TOOLS[@]} " =~ " git " ]]; then
+    echo "  git:"
+    echo "    brew install git              # Mac"
+    echo "    sudo apt install git          # Linux"
+    echo ""
+  fi
+
+  if [[ " ${MISSING_TOOLS[@]} " =~ " jira-rh OR jira-cli " ]]; then
+    echo "  jira-rh (recommended - faster):"
+    echo "    npm install -g jira-rh"
+    echo "    jira-rh config                # Configure after install"
+    echo ""
+    echo "  OR jira-cli:"
+    echo "    brew install jira-cli         # Mac"
+    echo "    https://github.com/ankitpokhrel/jira-cli"
+    echo ""
+  fi
+
+  if [[ " ${MISSING_TOOLS[@]} " =~ " gh " ]]; then
+    echo "  gh (GitHub CLI):"
+    echo "    brew install gh               # Mac"
+    echo "    sudo apt install gh           # Linux"
+    echo "    gh auth login                 # Authenticate after install"
+    echo ""
+  fi
+
+  echo "After installing missing tools, run this script again."
+  exit 1
+fi
+
+echo "✅ All prerequisites installed:"
+if command -v jira-rh &> /dev/null; then
+  echo "  • git: $(git --version | head -1)"
+  echo "  • jira-rh: $(jira-rh --version 2>/dev/null || echo 'installed')"
+  echo "  • gh: $(gh --version | head -1)"
+elif command -v jira &> /dev/null; then
+  echo "  • git: $(git --version | head -1)"
+  echo "  • jira-cli: $(jira version 2>/dev/null || echo 'installed')"
+  echo "  • gh: $(gh --version | head -1)"
+fi
+echo ""
+
 # Check if Claude agents directory exists
 if [ ! -d "$CLAUDE_AGENTS_DIR" ]; then
   echo "❌ Claude agents directory not found: $CLAUDE_AGENTS_DIR"

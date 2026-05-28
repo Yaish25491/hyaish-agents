@@ -2,6 +2,60 @@
 
 Quick installation guide for the unified `hyaish-agents` plugin containing multiple swarms.
 
+## Prerequisites
+
+Before installing the plugin, ensure you have these CLI tools:
+
+### Required Tools
+
+**1. jira-rh or jira-cli** - Jira CLI for Epic reading
+```bash
+# Option 1: jira-rh (recommended - faster)
+npm install -g jira-rh
+
+# Option 2: jira-cli
+brew install jira-cli  # Mac
+# Or: https://github.com/ankitpokhrel/jira-cli
+
+# Configure (one time)
+jira-rh config  # Follow prompts for Jira URL + credentials
+```
+
+**2. gh** - GitHub CLI for automated PR creation
+```bash
+# Install
+brew install gh          # Mac
+sudo apt install gh      # Linux
+# Or: https://cli.github.com/
+
+# Authenticate (one time)
+gh auth login
+```
+
+**3. git** - Standard git CLI
+```bash
+# Usually pre-installed
+git --version
+
+# If not:
+brew install git         # Mac
+sudo apt install git     # Linux
+```
+
+### Optional Tools
+
+**ansible** - For local testing and validation
+```bash
+pip install ansible
+```
+
+**ansible-galaxy** - Usually comes with Ansible
+```bash
+ansible-galaxy --version
+```
+
+---
+
 ## For Your Team
 
 ### One-Line Install

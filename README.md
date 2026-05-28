@@ -206,10 +206,23 @@ cd ~/projects/ansible-collections/microsoft-scvmm/
 
 ## 🔧 Requirements
 
+### Required
+
 - **Claude Code** (CLI, desktop, or web)
-- **Jira** access (for Epic reading)
-- **Test environment** (optional - can build code-only)
-- **Git repository** (optional - can deliver locally)
+- **jira-rh** or **jira-cli** - Jira CLI tool for reading Epics
+  - Install: `npm install -g jira-rh` or `brew install jira-cli`
+  - Used by: jira-ingestion-specialist (fast Epic reading)
+- **gh** - GitHub CLI for automated PR creation
+  - Install: `brew install gh` (Mac) or `apt install gh` (Linux)
+  - Auth: `gh auth login`
+  - Used by: release-specialist (enhancement mode - auto-creates PRs)
+- **git** - Standard git CLI (usually pre-installed)
+
+### Optional
+
+- **Test environment** (can build code-only without testing)
+- **Git repository** (can deliver locally without remote push)
+- **Ansible** (for local testing and validation)
 
 ## 📊 Verification
 

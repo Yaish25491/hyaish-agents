@@ -1,5 +1,35 @@
 # Universal Ansible Collection Swarm - Quick Start
 
+## Prerequisites
+
+Ensure these CLI tools are installed:
+
+**Required**:
+- `jira-rh` or `jira-cli` - For reading Jira Epics
+  ```bash
+  npm install -g jira-rh && jira-rh config
+  ```
+- `gh` - GitHub CLI for automated PRs
+  ```bash
+  brew install gh && gh auth login
+  ```
+- `git` - Standard git CLI (usually pre-installed)
+
+**Optional**:
+- `ansible` - For local testing
+  ```bash
+  pip install ansible
+  ```
+
+**Check installation**:
+```bash
+jira-rh --version  # or: jira version
+gh --version
+git --version
+```
+
+---
+
 ## One-Command Build
 
 ```bash
