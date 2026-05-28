@@ -55,5 +55,6 @@ build/
 .env.local
 .env.*.local
 
-# Claude specific
+# Claude specific (but keep .claude-plugin/)
 .claude/
+!**/.claude-plugin/
