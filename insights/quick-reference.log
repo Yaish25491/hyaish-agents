@@ -1,0 +1,16 @@
+# Quick Reference Log - Agent-Readable Insights
+#
+# Format: CATEGORY|SUBCATEGORY|LESSON (one-liner with solution)
+# Purpose: Fast scanning by lead-architect on startup
+# Updated: Automatically by learning-evolution-specialist after each run
+#
+# Categories: Platform | Pattern | Operational
+# Subcategories: Specific characteristic or type
+#
+# Example:
+# REST-API|Rate-Limiting|Check 429 status, use Retry-After header, exponential backoff 60→120→240s
+#
+# DO NOT manually edit this file - it's maintained by agents
+# For detailed context, see markdown files in platform-insights/, pattern-insights/, operational-insights/
+#
+# === INSIGHTS START BELOW THIS LINE ===

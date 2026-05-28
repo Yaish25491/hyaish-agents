@@ -19,8 +19,9 @@ Thumbs.db
 *.sublime-project
 *.sublime-workspace
 
-# Logs
+# Logs (but keep insights/quick-reference.log)
 *.log
+!insights/quick-reference.log
 logs/
 *.log.*
 
