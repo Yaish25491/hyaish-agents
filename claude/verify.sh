@@ -1,23 +1,29 @@
 #!/bin/bash
 # Verify Hyaish Agents Plugin Installation
 
-PLUGIN_DIR="$HOME/.claude/agents/hyaish-agents"
+PLUGIN_DIR="$HOME/.claude/agents/hyaish-agents-plugin"
 
 echo "🔍 Verifying Hyaish Agents Plugin"
 echo "=================================="
 echo ""
 
-# Check if directory exists
-if [ ! -d "$PLUGIN_DIR" ]; then
+# Check if symlink or directory exists
+if [ ! -e "$PLUGIN_DIR" ]; then
   echo "❌ Plugin not found at: $PLUGIN_DIR"
   echo ""
   echo "To install:"
-  echo "  cd ~/.claude/agents"
-  echo "  git clone https://github.com/hyaish/hyaish-agents.git"
+  echo "  git clone https://github.com/Yaish25491/hyaish-agents.git /path/to/your/location"
+  echo "  cd /path/to/your/location/hyaish-agents"
+  echo "  bash install.sh"
   exit 1
 fi
 
-echo "✅ Plugin directory found: $PLUGIN_DIR"
+if [ -L "$PLUGIN_DIR" ]; then
+  SYMLINK_TARGET=$(readlink "$PLUGIN_DIR")
+  echo "✅ Plugin symlink found: $PLUGIN_DIR -> $SYMLINK_TARGET"
+else
+  echo "✅ Plugin directory found: $PLUGIN_DIR"
+fi
 echo ""
 
 # Check plugin files
