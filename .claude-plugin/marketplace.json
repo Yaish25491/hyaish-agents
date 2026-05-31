@@ -1,0 +1,19 @@
+{
+  "name": "hyaish-agents",
+  "owner": {
+    "name": "Hyaish",
+    "email": "hyaish@example.com"
+  },
+  "description": "Intelligent multi-agent swarms for automation - Ansible collections, Kubernetes operators, Terraform modules",
+  "plugins": [
+    {
+      "name": "hyaish-agents",
+      "source": "./claude",
+      "description": "Universal Ansible Collection Swarm - builds ANY Ansible collection from Jira Epics through intelligent research and pattern matching",
+      "version": "1.0.0",
+      "author": {
+        "name": "Hyaish"
+      }
+    }
+  ]
+}
