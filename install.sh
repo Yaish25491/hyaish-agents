@@ -125,9 +125,9 @@ fi
 PLUGIN_CACHE="$HOME/.claude/plugins/cache/local/hyaish-agents/1.0.0"
 mkdir -p "$PLUGIN_CACHE"
 
-# Copy plugin files to cache
+# Copy plugin files to cache (including hidden files)
 echo "📦 Installing plugin to cache..."
-cp -r "$REPO_DIR/claude/"* "$PLUGIN_CACHE/"
+(cd "$REPO_DIR/claude" && cp -r . "$PLUGIN_CACHE/")
 echo "✅ Plugin installed: $PLUGIN_CACHE"
 echo ""
 
