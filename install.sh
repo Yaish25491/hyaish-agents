@@ -121,9 +121,19 @@ elif [ -e "$PLUGIN_LINK" ]; then
   exit 1
 fi
 
-# Create symlink
-ln -s "$REPO_DIR/claude" "$PLUGIN_LINK"
-echo "✅ Created symlink: $PLUGIN_LINK -> $REPO_DIR/claude"
+# Create plugin cache directory (Claude Code plugin standard location)
+PLUGIN_CACHE="$HOME/.claude/plugins/cache/local/hyaish-agents/1.0.0"
+mkdir -p "$PLUGIN_CACHE"
+
+# Copy plugin files to cache
+echo "📦 Installing plugin to cache..."
+cp -r "$REPO_DIR/claude/"* "$PLUGIN_CACHE/"
+echo "✅ Plugin installed: $PLUGIN_CACHE"
+echo ""
+
+# Create legacy symlink for backwards compatibility
+ln -s "$PLUGIN_CACHE" "$PLUGIN_LINK"
+echo "✅ Created legacy symlink: $PLUGIN_LINK -> $PLUGIN_CACHE"
 echo ""
 
 # Configure permissions for autonomous operation
@@ -156,6 +166,55 @@ EOF
 
 echo "✅ Configured zero-permission autonomy in: $SETTINGS_FILE"
 echo "   All bash commands and tools pre-approved for autonomous operation"
+echo ""
+
+# Register plugin in Claude Code's installed plugins registry
+REGISTRY_FILE="$HOME/.claude/plugins/installed_plugins.json"
+echo "📝 Registering plugin..."
+
+if [ -f "$REGISTRY_FILE" ]; then
+  # Backup registry
+  cp "$REGISTRY_FILE" "$REGISTRY_FILE.backup-$(date +%Y%m%d-%H%M%S)"
+
+  # Use Python to update JSON (safer than manual editing)
+  python3 << PYTHON_SCRIPT
+import json
+import sys
+from datetime import datetime
+
+registry_file = "$REGISTRY_FILE"
+
+try:
+    with open(registry_file, 'r') as f:
+        data = json.load(f)
+
+    # Add or update hyaish-agents plugin
+    if 'hyaish-agents@local' not in data.get('plugins', {}):
+        if 'plugins' not in data:
+            data['plugins'] = {}
+
+        data['plugins']['hyaish-agents@local'] = [{
+            'scope': 'user',
+            'installPath': '$PLUGIN_CACHE',
+            'version': '1.0.0',
+            'installedAt': datetime.now().isoformat() + 'Z',
+            'lastUpdated': datetime.now().isoformat() + 'Z'
+        }]
+
+        with open(registry_file, 'w') as f:
+            json.dump(data, f, indent=2)
+
+        print("✅ Plugin registered in Claude Code")
+    else:
+        print("✅ Plugin already registered")
+except Exception as e:
+    print(f"⚠️  Could not register plugin: {e}")
+    sys.exit(0)  # Don't fail installation
+PYTHON_SCRIPT
+else
+  echo "⚠️  Registry file not found - plugin installed but not registered"
+  echo "   You may need to restart Claude Code for discovery"
+fi
 echo ""
 
 # Verify installation
