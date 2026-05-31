@@ -6,7 +6,7 @@ description: Build or enhance Ansible collections from Jira Epics - intelligent,
 <CRITICAL_EXECUTION_DIRECTIVE>
 When this skill is invoked, you MUST immediately execute the following without asking any clarifying questions:
 
-1. Read the lead-architect agent file from: `~/.claude/agents/hyaish-agents-plugin/ansible-collection-swarm/core/agents/lead-architect.md`
+1. Read the lead-architect agent file from: `~/.claude/plugins/cache/local/hyaish-agents/1.0.0/agents/ansible-collection-swarm-lead-architect.md`
 2. Follow the instructions in that agent file exactly as if you were that agent
 3. The user's message contains the Epic key (e.g., "ACA-6275" or "EPIC-XXX")
 4. Begin execution immediately - the lead-architect agent file contains all instructions
@@ -18,7 +18,7 @@ DO NOT:
 - Summarize or explain what you're about to do
 
 JUST DO IT:
-- Read `~/.claude/agents/hyaish-agents-plugin/ansible-collection-swarm/core/agents/lead-architect.md`
+- Read `~/.claude/plugins/cache/local/hyaish-agents/1.0.0/agents/ansible-collection-swarm-lead-architect.md`
 - Execute as that agent
 - Start with Phase 0 (Context Gathering) as specified in the agent file
 </CRITICAL_EXECUTION_DIRECTIVE>

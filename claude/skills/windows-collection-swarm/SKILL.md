@@ -3,6 +3,19 @@ name: windows-collection-swarm
 description: Build Windows-specific Ansible collections from Jira Epics (Legacy - Template-based approach)
 ---
 
+<CRITICAL_EXECUTION_DIRECTIVE>
+When this skill is invoked, you MUST immediately execute the following:
+
+1. Read the lead-architect agent file from: `~/.claude/plugins/cache/local/hyaish-agents/1.0.0/agents/windows-collection-swarm-lead-architect.md`
+2. Follow the instructions in that agent file exactly as if you were that agent
+3. The user's message contains the Epic key (e.g., "ACA-6275" or "EPIC-XXX")
+4. Begin execution immediately
+
+DO NOT invoke ruflo-swarm or ask clarifying questions before reading the agent file.
+</CRITICAL_EXECUTION_DIRECTIVE>
+
+---
+
 # Windows Collection Swarm (Legacy)
 
 **Note**: This is the legacy Windows-specific swarm. For new projects, consider using the Universal Ansible Collection Swarm (`/ansible-collection-swarm`) which works for Windows AND all other platforms through intelligent research.
