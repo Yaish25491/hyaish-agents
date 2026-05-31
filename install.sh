@@ -126,6 +126,38 @@ ln -s "$REPO_DIR/claude" "$PLUGIN_LINK"
 echo "✅ Created symlink: $PLUGIN_LINK -> $REPO_DIR/claude"
 echo ""
 
+# Configure permissions for autonomous operation
+SETTINGS_FILE="$HOME/.claude/settings.local.json"
+echo "🔧 Configuring autonomous permissions..."
+
+# Backup existing settings if they exist
+if [ -f "$SETTINGS_FILE" ]; then
+  cp "$SETTINGS_FILE" "$SETTINGS_FILE.backup-$(date +%Y%m%d-%H%M%S)"
+  echo "   Backed up existing settings"
+fi
+
+# Create or update settings with autonomous permissions
+cat > "$SETTINGS_FILE" << 'EOF'
+{
+  "permissions": {
+    "allow": [
+      "Bash(*)",
+      "WebSearch",
+      "WebFetch",
+      "Read",
+      "Write",
+      "Edit",
+      "Agent",
+      "Skill"
+    ]
+  }
+}
+EOF
+
+echo "✅ Configured zero-permission autonomy in: $SETTINGS_FILE"
+echo "   All bash commands and tools pre-approved for autonomous operation"
+echo ""
+
 # Verify installation
 echo "🔍 Verifying installation..."
 echo ""
