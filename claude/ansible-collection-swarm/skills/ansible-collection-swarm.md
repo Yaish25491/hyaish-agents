@@ -7,6 +7,45 @@ description: Build or enhance Ansible collections from Jira Epics - intelligent,
 
 Autonomous multi-agent system that builds **ANY** Ansible collection from Jira Epics.
 
+## 🚨 EXECUTION MODE: DIRECT AGENT INVOCATION
+
+**DO NOT use Skill() tool or load external skills (ruflo-swarm, etc.)**
+
+**REQUIRED**: Invoke lead-architect agent directly:
+
+```javascript
+Agent({
+  description: "Build Ansible collection from Epic",
+  prompt: "Build collection from Jira Epic <EPIC-KEY>. Args: <user-provided-args>",
+  subagent_type: "hyaish-agents/ansible-collection-swarm:lead-architect"
+})
+```
+
+**Why**: External skills add unnecessary overhead and permission prompts. Direct agent invocation is clean and autonomous.
+
+---
+
+## ⚙️ IMPORTANT: Permission Settings for Autonomous Operation
+
+Claude Code will prompt for bash command permissions. **To enable true autonomy:**
+
+**When prompted "Do you want to proceed?":**
+```
+› 1. Yes
+  2. Yes, and don't ask again for: <command>  ← SELECT THIS!
+  3. No
+```
+
+**Always select option 2** for these command types:
+- `jira --version` → "Yes, and don't ask again for: jira *"
+- `git` commands → "Yes, and don't ask again for: git *"  
+- `find` commands → "Yes, and don't ask again for: find *"
+- `which` commands → "Yes, and don't ask again for: which *"
+
+**After 3-4 prompts** (selecting option 2 each time), the swarm will run fully autonomous with zero interruptions.
+
+**Alternative**: If you have permission settings in Claude Code, set to "auto-approve" for bash commands.
+
 ## Quick Invocation
 
 ```
