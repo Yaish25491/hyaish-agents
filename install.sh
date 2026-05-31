@@ -168,6 +168,52 @@ echo "✅ Configured zero-permission autonomy in: $SETTINGS_FILE"
 echo "   All bash commands and tools pre-approved for autonomous operation"
 echo ""
 
+# Register marketplace in Claude Code
+MARKETPLACE_FILE="$HOME/.claude/plugins/known_marketplaces.json"
+echo "📝 Registering marketplace..."
+
+if [ -f "$MARKETPLACE_FILE" ]; then
+  # Backup marketplace file
+  cp "$MARKETPLACE_FILE" "$MARKETPLACE_FILE.backup-$(date +%Y%m%d-%H%M%S)"
+
+  # Use Python to add marketplace entry
+  python3 << PYTHON_SCRIPT
+import json
+import sys
+from datetime import datetime
+
+marketplace_file = "$MARKETPLACE_FILE"
+
+try:
+    with open(marketplace_file, 'r') as f:
+        data = json.load(f)
+
+    # Add hyaish-agents marketplace pointing to repo directory
+    if 'hyaish-agents' not in data:
+        data['hyaish-agents'] = {
+            'source': {
+                'source': 'directory',
+                'path': '$REPO_DIR'
+            },
+            'installLocation': '$REPO_DIR',
+            'lastUpdated': datetime.now().isoformat() + 'Z'
+        }
+
+        with open(marketplace_file, 'w') as f:
+            json.dump(data, f, indent=2)
+
+        print("✅ Marketplace registered")
+    else:
+        print("✅ Marketplace already registered")
+except Exception as e:
+    print(f"⚠️  Could not register marketplace: {e}")
+    sys.exit(0)  # Don't fail installation
+PYTHON_SCRIPT
+else
+  echo "⚠️  Marketplace file not found"
+fi
+echo ""
+
 # Register plugin in Claude Code's installed plugins registry
 REGISTRY_FILE="$HOME/.claude/plugins/installed_plugins.json"
 echo "📝 Registering plugin..."
@@ -189,11 +235,11 @@ try:
         data = json.load(f)
 
     # Add or update hyaish-agents plugin
-    if 'hyaish-agents@local' not in data.get('plugins', {}):
+    if 'hyaish-agents@hyaish-agents' not in data.get('plugins', {}):
         if 'plugins' not in data:
             data['plugins'] = {}
 
-        data['plugins']['hyaish-agents@local'] = [{
+        data['plugins']['hyaish-agents@hyaish-agents'] = [{
             'scope': 'user',
             'installPath': '$PLUGIN_CACHE',
             'version': '1.0.0',
