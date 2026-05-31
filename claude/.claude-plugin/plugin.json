@@ -2,7 +2,9 @@
   "name": "hyaish-agents",
   "version": "1.0.0",
   "description": "Intelligent multi-agent swarms for automation - Ansible collections, Kubernetes operators, Terraform modules",
-  "author": "Hyaish",
+  "author": {
+    "name": "Hyaish"
+  },
   "repository": "https://github.com/Yaish25491/hyaish-agents",
   "homepage": "https://github.com/Yaish25491/hyaish-agents",
   "license": "MIT",
