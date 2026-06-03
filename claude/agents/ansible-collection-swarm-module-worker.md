@@ -501,6 +501,50 @@ ansible-test integration <module_name> --python 3.9 --check
 - Do NOT hardcode values (use module parameters)
 - Do NOT ignore check mode support
 
+## Learned Patterns (from production runs)
+
+### LESSON: Windows CLI Modules Under WinRM/SYSTEM Context (ACA-6275)
+
+When building modules that invoke CLI tools on Windows via WinRM, the process runs as SYSTEM. Many executables (winget, chocolatey, etc.) are NOT in the SYSTEM PATH because they are installed per-user or via AppX packages.
+
+**Pattern for resolving CLI tool paths under SYSTEM**:
+```powershell
+Function Find-ToolPath {
+    # 1. Try standard PATH
+    $cmd = Get-Command tool.exe -ErrorAction SilentlyContinue
+    if ($cmd) { return $cmd.Source }
+    
+    # 2. Check WindowsApps for AppX-installed tools
+    $appxPaths = Get-ChildItem "$env:ProgramFiles\WindowsApps\*tool*\tool.exe" -ErrorAction SilentlyContinue
+    if ($appxPaths) { return ($appxPaths | Sort-Object LastWriteTime -Descending | Select-Object -First 1).FullName }
+    
+    # 3. Query AppxPackage for install location
+    $pkg = Get-AppxPackage -Name "*ToolPublisher*" -ErrorAction SilentlyContinue
+    if ($pkg) { return Join-Path $pkg.InstallLocation "tool.exe" }
+    
+    return $null
+}
+```
+
+Apply this pattern for any CLI tool that may not be in SYSTEM PATH.
+
+### LESSON: Documentation Format Detection (ACA-6275)
+
+Before creating module documentation, detect the collection's preferred format:
+- **Check for `.yml` files** in `plugins/modules/` alongside `.ps1` files (newer pattern)
+- **Check for `.py` files** with `DOCUMENTATION` string blocks (older pattern)
+- **Match the most recent additions** to the collection
+
+Example: ansible.windows uses `.yml` for newer modules like `win_winget.yml`, but `.py` for older ones like `win_package.py`.
+
+### LESSON: Package Management Test Prerequisites (ACA-6275)
+
+Package management modules need careful test setup:
+- Ensure package providers are registered (e.g., `Install-PackageProvider -Name NuGet`)
+- Trust repositories for non-interactive installs (e.g., `Set-PSRepository -InstallationPolicy Trusted`)
+- Use `block/always` pattern for cleanup to avoid test pollution
+- Test with small, well-known packages (not large apps that take minutes to install)
+
 ## Intelligence in Action
 
 **Unknown platform example**:

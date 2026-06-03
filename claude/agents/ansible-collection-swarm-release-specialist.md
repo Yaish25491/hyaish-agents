@@ -44,8 +44,20 @@ If audit fails → Report issues to lead-architect, DO NOT deliver.
 ```bash
 cd ~/agentic-workflow-collections/<namespace>/<name>
 
-# Stage all changes
+# Stage all changes EXCEPT version/changelog files
 git add .
+
+# 🚨 CRITICAL: Unstage version/changelog files (maintainer controls these)
+git reset HEAD galaxy.yml 2>/dev/null || true
+git reset HEAD CHANGELOG.rst 2>/dev/null || true
+git reset HEAD changelogs/changelog.yaml 2>/dev/null || true
+
+# Verify changelog fragments exist (required)
+if [ ! -d "changelogs/fragments" ] || [ -z "$(ls -A changelogs/fragments/*.yml 2>/dev/null)" ]; then
+  echo "❌ ERROR: No changelog fragments found!"
+  echo "   Every module MUST have a changelog fragment in changelogs/fragments/"
+  exit 1
+fi
 
 # Commit with quality message
 git commit -m "Complete Ansible collection: <namespace>.<name>
@@ -88,6 +100,36 @@ fi
 
 **Philosophy**: This is collaborative work on a real repository. Use proper git workflow - branch, commit, push to fork, create PR. Other agents (code review, CI) will validate via PR process.
 
+### 🚨 CRITICAL: Versioning and Changelog Rules
+
+**UNIVERSAL RULES (ALL MODES)**:
+
+1. **Version Bumps - NEVER ALLOWED**:
+   - ❌ NEVER bump version in `galaxy.yml` (maintainer does this during release)
+   - ❌ NEVER modify `galaxy.yml` for any reason
+   - 🔒 Maintainer controls all versioning
+
+2. **Changelog Generation - NEVER ALLOWED**:
+   - ❌ NEVER run `antsibull-changelog release`
+   - ❌ NEVER modify `changelogs/changelog.yaml` (generated artifact)
+   - ❌ NEVER modify `CHANGELOG.rst` (generated artifact)
+   - 🔒 Maintainer controls release process
+
+3. **Changelog Fragments - ALWAYS REQUIRED**:
+   - ✅ ALWAYS create changelog fragment for EVERY new module
+   - ✅ ALWAYS create changelog fragment for EVERY enhancement to existing module
+   - ✅ ALWAYS create changelog fragment for EVERY bugfix
+   - 📝 Format: `changelogs/fragments/<epic-key>-<module-name>.yml`
+
+**What You MUST Do**:
+- ✅ Create changelog fragments (fragments/*.yml)
+- ✅ Commit code changes, tests, and fragments
+- ✅ Let maintainers control versioning and release generation
+
+**Learned from**: 
+- PR #905 review - maintainer requested removal of version bump and changelog generation
+- PR #907 issue - version bump included when it shouldn't have been
+
 ### Git Operations (Collaborative)
 
 ```bash
@@ -101,12 +143,68 @@ git pull origin main
 BRANCH_NAME="add-modules-$(echo <EPIC-KEY> | tr '[:upper:]' '[:lower:]')"
 git checkout -b "$BRANCH_NAME"
 
-# 3. Stage changes (only new/modified files)
-git add plugins/modules/*.py
-git add tests/integration/targets/*/
-git add docs/plans/module_backlog.md
+# 3. Create changelog fragments (REQUIRED for EVERY module)
+# This must happen BEFORE staging
+echo "📝 Creating changelog fragments..."
 
-# 4. Commit with quality message
+# Read module list from backlog or detect from plugins/modules/
+MODULES=$(ls -1 plugins/modules/*.py 2>/dev/null | xargs -n1 basename | sed 's/\.py$//' | grep -v "^__")
+
+for module in $MODULES; do
+  FRAGMENT_FILE="changelogs/fragments/<EPIC-KEY>-${module}.yml"
+  
+  # Check if fragment already exists
+  if [ ! -f "$FRAGMENT_FILE" ]; then
+    # Determine fragment type (new module vs enhancement)
+    if git log --all --oneline -- "plugins/modules/${module}.py" 2>/dev/null | grep -q .; then
+      FRAGMENT_TYPE="minor_changes"  # Enhancement to existing module
+      FRAGMENT_DESC="Enhanced ${module} module with additional functionality"
+    else
+      FRAGMENT_TYPE="minor_changes"  # New module (use minor_changes, not major_changes)
+      FRAGMENT_DESC="Added ${module} module for <describe purpose>"
+    fi
+    
+    # Create fragment file
+    cat > "$FRAGMENT_FILE" <<EOF
+---
+$FRAGMENT_TYPE:
+  - $FRAGMENT_DESC
+EOF
+    
+    echo "   ✅ Created: $FRAGMENT_FILE"
+  else
+    echo "   ⏭️  Fragment already exists: $FRAGMENT_FILE"
+  fi
+done
+
+# 4. Stage changes (code, tests, and fragments - NO planning docs, NO version files)
+git add plugins/modules/*.py plugins/modules/*.ps1 plugins/modules/*.yml
+git add tests/integration/targets/*/
+git add changelogs/fragments/*.yml  # ALWAYS include fragments
+
+# Verify NO planning docs are staged
+git reset HEAD docs/plans/ 2>/dev/null || true
+
+# 🚨 CRITICAL: Verify NO version/changelog files are staged
+git reset HEAD galaxy.yml 2>/dev/null || true
+git reset HEAD CHANGELOG.rst 2>/dev/null || true  
+git reset HEAD changelogs/changelog.yaml 2>/dev/null || true
+
+# Verify fragments were staged
+FRAGMENT_COUNT=$(git diff --cached --name-only | grep "^changelogs/fragments/" | wc -l | tr -d ' ')
+if [ "$FRAGMENT_COUNT" -eq 0 ]; then
+  echo "❌ ERROR: No changelog fragments staged!"
+  echo "   Every module change MUST include a changelog fragment"
+  exit 1
+fi
+echo "✅ Changelog fragments staged: $FRAGMENT_COUNT"
+
+# Verify .gitignore excludes planning artifacts
+if ! grep -q "^docs/plans/" .gitignore 2>/dev/null; then
+  echo "⚠️  WARNING: .gitignore should exclude docs/plans/"
+fi
+
+# 5. Commit with quality message
 git commit -m "Add modules from <EPIC-KEY>
 
 Modules added:
@@ -123,7 +221,7 @@ Test environment: <test env>
 
 Co-authored-by: Hyaish Agents <noreply@hyaish.com>"
 
-# 5. Push to fork (NOT origin)
+# 6. Push to fork (NOT origin)
 # Detect fork remote (usually 'fork' or username)
 FORK_REMOTE=$(git remote -v | grep -E "fork|$(git config user.name)" | head -1 | awk '{print $1}')
 
@@ -135,36 +233,43 @@ fi
 
 git push "$FORK_REMOTE" "$BRANCH_NAME"
 
-# 6. Create Pull Request (use gh CLI if available)
+# 7. Create Pull Request (use gh CLI with structured format)
 if command -v gh &> /dev/null; then
+  # Determine PR type based on module type
+  if grep -q "status: enhancement" docs/plans/module_backlog.md 2>/dev/null; then
+    ISSUE_TYPE="Feature Pull Request"
+  else
+    ISSUE_TYPE="New Module Pull Request"
+  fi
+  
+  # ⚠️  IMPORTANT: Fill out ALL placeholders in the template:
+  # - <module_name>: The actual module name (e.g., "win_winget")
+  # - <high-level description>: Brief purpose (e.g., "Windows Package Manager (winget) support")
+  # - Purpose/Functionality/Architecture/Error Handling/Validation: Complete each bullet
+  # - <namespace>.<collection>.<module_name>: Full module path (e.g., "ansible.windows.win_winget")
+  # - <EPIC-KEY>: Jira epic reference (e.g., "ACA-6275")
+  #
+  # DO NOT leave placeholder text like "<What problem does this solve?>" in the final PR
+  
   gh pr create \
-    --title "Add modules from <EPIC-KEY>" \
-    --body "## Summary
+    --title "feat: add <module_name> module" \
+    --body "##### SUMMARY
+Adds <module_name> module for <high-level description>.
 
-Implemented <count> modules from Jira Epic <EPIC-KEY>:
+**Design & Implementation:**
+- **Purpose:** <What problem does this solve? What capability does it add?>
+- **Functionality:** <What operations/states/parameters does the module support?>
+- **Architecture:** <How is it implemented? PowerShell/.ps1 + Python/.py split? API pattern?>
+- **Error Handling:** <How does it handle failures, edge cases, or invalid inputs?>
+- **Validation:** <What tests validate the functionality? Idempotency? Check mode?>
 
-<list modules with one-line descriptions>
+##### ISSUE TYPE
+- $ISSUE_TYPE
 
-## Testing
+##### COMPONENT NAME
+- <namespace>.<collection>.<module_name>
 
-- ✅ All new module tests passing
-- ✅ Regression tests passing (no breaks to existing modules)
-- ✅ Test environment: <test env>
-
-## Epic Details
-
-**Epic**: <EPIC-URL>
-**Modules**: <count>
-**Generated by**: Hyaish Agents (ansible-collection-swarm)
-
-## Review Checklist
-
-- [ ] Code review (superpowers:code-reviewer will handle)
-- [ ] CI passing
-- [ ] Documentation updated
-- [ ] Module backlog updated
-
-🤖 This PR was generated autonomously by Hyaish Agents" \
+<EPIC-KEY>" \
     --base main \
     --head "$FORK_REMOTE:$BRANCH_NAME"
 else
