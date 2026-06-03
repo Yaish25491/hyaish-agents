@@ -1,0 +1,22 @@
+# Insights Application Tracking
+# This file tracks which insights have been applied to which agents
+# Automatically maintained by insights-sync-specialist
+
+insights: {}
+
+# Example structure:
+# insights:
+#   Platform|REST-API-Rate-Limiting:
+#     applied_to:
+#       - module-worker
+#       - enhancement-specialist
+#     applied_date: 2026-06-03
+#     created_by: "Hen Yaish"
+#     created_commit: "abc123"
+#
+#   Pattern|Provider-Auto-Detection:
+#     applied_to:
+#       - module-worker
+#     applied_date: 2026-06-01
+#     created_by: "Hen Yaish"
+#     created_commit: "def456"
