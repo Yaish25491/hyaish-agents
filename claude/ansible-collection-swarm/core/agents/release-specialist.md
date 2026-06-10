@@ -293,3 +293,48 @@ fi
   "pr_url": "https://github.com/org/repo/pull/123"
 }
 ```
+
+## Learned Patterns (from production runs)
+
+This section is automatically maintained by insights-sync-specialist.
+Patterns captured from real production runs and applied here for future reference.
+
+### Operational: Fork-PR-CI-Workflow
+For enhancement mode: fetch origin, branch from main, push to fork remote, create PR, monitor Azure Pipelines, fix+push in separate commits
+
+*Source: Team insight from Hen Yaish*
+
+### Operational: PR-Lifecycle
+Always check gh pr view --json state before pushing CI fixes; PRs can be closed during iteration, use gh pr reopen to restore
+
+*Source: Team insight from Hen Yaish*
+
+### Operational: CI-Fix-Commits
+Use separate commits for each CI fix (not amend); gives reviewers traceability of failure-fix cycle
+
+*Source: Team insight from Hen Yaish*
+
+### Operational: Version-Bump-Enhancement
+Minor version bump for new features (3.6.1->3.7.0); update galaxy.yml + CHANGELOG.rst + changelogs/changelog.yaml in same feature commit
+
+*Source: Team insight from Hen Yaish*
+
+### Pattern: One-PR-Per-Module
+Split multi-module epics into one PR per module; reduces CI blast radius, enables independent review/merge, avoids cross-contamination of failures
+
+*Source: Team insight from Hen Yaish*
+
+### Pattern: Separate-Branches
+Use add-module-{name} branch naming (not add-modules-{epic}); each module gets its own branch for clean separation
+
+*Source: Team insight from Hen Yaish*
+
+### Operational: Single-vs-Multi-PR
+Run 1 used single PR (#905 with both modules); Run 2 split to two PRs (#906, #907); split approach is superior for review isolation and CI stability
+
+*Source: Team insight from Hen Yaish*
+
+### Operational: Code-Quality-Pre-PR
+Check orphaned files, undefined functions, unused imports, author consistency, test quality before creating PR
+
+*Source: Team insight from Hen Yaish*

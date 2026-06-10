@@ -519,3 +519,78 @@ Agent process:
 ```
 
 This worker adapts to ANY platform through pattern recognition!
+
+## Learned Patterns (from production runs)
+
+This section is automatically maintained by insights-sync-specialist.
+Patterns captured from real production runs and applied here for future reference.
+
+### Platform: Windows-Winget-SYSTEM-Path
+winget.exe not in SYSTEM PATH under WinRM; resolve via Get-ChildItem "$env:ProgramFiles\WindowsApps\Microsoft.DesktopAppInstaller_*\winget.exe"
+
+*Source: Team insight from Hen Yaish*
+
+### Platform: Windows-PackageMgmt-NuGet
+NuGet via PackageManagement needs destination_path + filesystem fallback check; Get-Package alone misses custom-path installs
+
+*Source: Team insight from Hen Yaish*
+
+### Platform: Windows-PackageMgmt-PSGallery
+Set-PSRepository -Name PSGallery -InstallationPolicy Trusted before non-interactive PowerShellGet installs
+
+*Source: Team insight from Hen Yaish*
+
+### Platform: Windows-Doc-Format
+ansible.windows uses .yml doc files for newer modules (not .py DOCUMENTATION blocks); detect format before creating new modules
+
+*Source: Team insight from Hen Yaish*
+
+### Platform: Winget-MSIX-Access-Denied
+winget.exe exists but MSIX apps can throw Access Denied when executing under WinRM/SSH SYSTEM; must test execution (--version) not just file existence
+
+*Source: Team insight from Hen Yaish*
+
+### Platform: Winget-Execution-Check
+Integration tests must use ProcessStartInfo to verify winget can actually run, not just check if binary is on disk; catch Access Denied from MSIX sandbox
+
+*Source: Team insight from Hen Yaish*
+
+### Platform: Server2025-SSH-Timeout
+Windows Server 2025 SSH Key transport consistently times out in Azure CI after 50min; not a code issue, infrastructure flake on that specific transport
+
+*Source: Team insight from Hen Yaish*
+
+### Platform: PackageMgmt-No-CI-Regression
+win_package PackageManagement provider passed CI first try when properly isolated from auto-detection and manually validated; isolation pattern works
+
+*Source: Team insight from Hen Yaish*
+
+### Pattern: Provider-Auto-Detection
+New providers with extra mandatory params MUST be excluded from auto-detection loops; use Where-Object filter on provider list
+
+*Source: Team insight from Hen Yaish*
+
+### Pattern: Required-If-Limitations
+Ansible required_if cannot condition on two params; move to manual validation in module body, preserve EXACT original error messages
+
+*Source: Team insight from Hen Yaish*
+
+### Pattern: Failure-Test-Regression
+When modifying module validation, always run FAILURE tests (not just success); existing tests assert on exact error message strings
+
+*Source: Team insight from Hen Yaish*
+
+### Pattern: Provider-Isolation
+Providers requiring explicit opt-in (extra params) must not participate in auto-detection; mirror the msix conditional exclusion pattern
+
+*Source: Team insight from Hen Yaish*
+
+### Pattern: PowerShell-Error-Handling
+Never use $Error.Clear(), prefer try/catch over ErrorAction, use SilentlyContinue not Ignore, don't set $ErrorActionPreference globally
+
+*Source: Team insight from Hen Yaish*
+
+### Pattern: PowerShell-Import-Conventions
+Use #AnsibleRequires not #Requires, import Ansible.Basic not Ansible.ModuleUtils.Legacy, no -Module flag, standardize imports
+
+*Source: Team insight from Hen Yaish*

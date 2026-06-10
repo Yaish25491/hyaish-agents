@@ -544,3 +544,158 @@ ls ~/agentic-workflow-collections/microsoft/scvmm/
 ---
 
 This Enhancement Specialist makes the swarm **production-ready for real-world incremental development**!
+
+## Learned Patterns (from production runs)
+
+This section is automatically maintained by insights-sync-specialist.
+Patterns captured from real production runs and applied here for future reference.
+
+### Platform: Windows-Winget-SYSTEM-Path
+winget.exe not in SYSTEM PATH under WinRM; resolve via Get-ChildItem "$env:ProgramFiles\WindowsApps\Microsoft.DesktopAppInstaller_*\winget.exe"
+
+*Source: Team insight from Hen Yaish*
+
+### Platform: Windows-PackageMgmt-NuGet
+NuGet via PackageManagement needs destination_path + filesystem fallback check; Get-Package alone misses custom-path installs
+
+*Source: Team insight from Hen Yaish*
+
+### Platform: Windows-PackageMgmt-PSGallery
+Set-PSRepository -Name PSGallery -InstallationPolicy Trusted before non-interactive PowerShellGet installs
+
+*Source: Team insight from Hen Yaish*
+
+### Platform: Windows-Doc-Format
+ansible.windows uses .yml doc files for newer modules (not .py DOCUMENTATION blocks); detect format before creating new modules
+
+*Source: Team insight from Hen Yaish*
+
+### Platform: Winget-MSIX-Access-Denied
+winget.exe exists but MSIX apps can throw Access Denied when executing under WinRM/SSH SYSTEM; must test execution (--version) not just file existence
+
+*Source: Team insight from Hen Yaish*
+
+### Platform: Winget-Execution-Check
+Integration tests must use ProcessStartInfo to verify winget can actually run, not just check if binary is on disk; catch Access Denied from MSIX sandbox
+
+*Source: Team insight from Hen Yaish*
+
+### Platform: Server2025-SSH-Timeout
+Windows Server 2025 SSH Key transport consistently times out in Azure CI after 50min; not a code issue, infrastructure flake on that specific transport
+
+*Source: Team insight from Hen Yaish*
+
+### Platform: PackageMgmt-No-CI-Regression
+win_package PackageManagement provider passed CI first try when properly isolated from auto-detection and manually validated; isolation pattern works
+
+*Source: Team insight from Hen Yaish*
+
+### Pattern: Provider-Auto-Detection
+New providers with extra mandatory params MUST be excluded from auto-detection loops; use Where-Object filter on provider list
+
+*Source: Team insight from Hen Yaish*
+
+### Pattern: Required-If-Limitations
+Ansible required_if cannot condition on two params; move to manual validation in module body, preserve EXACT original error messages
+
+*Source: Team insight from Hen Yaish*
+
+### Pattern: Failure-Test-Regression
+When modifying module validation, always run FAILURE tests (not just success); existing tests assert on exact error message strings
+
+*Source: Team insight from Hen Yaish*
+
+### Pattern: Provider-Isolation
+Providers requiring explicit opt-in (extra params) must not participate in auto-detection; mirror the msix conditional exclusion pattern
+
+*Source: Team insight from Hen Yaish*
+
+### Pattern: One-PR-Per-Module
+Split multi-module epics into one PR per module; reduces CI blast radius, enables independent review/merge, avoids cross-contamination of failures
+
+*Source: Team insight from Hen Yaish*
+
+### Pattern: Version-Both-PRs-Same
+When two PRs target same version (3.6.2), both bump to the same version independently; first to merge wins, second needs rebase — acceptable trade-off
+
+*Source: Team insight from Hen Yaish*
+
+### Pattern: Separate-Branches
+Use add-module-{name} branch naming (not add-modules-{epic}); each module gets its own branch for clean separation
+
+*Source: Team insight from Hen Yaish*
+
+### Pattern: CI-Fix-Separate-Commit
+CI fix as separate commit (not amend) enables clean traceability; PR #906 has 3 commits (feat + version + fix), PR #907 has 2 (feat + version)
+
+*Source: Team insight from Hen Yaish*
+
+### Pattern: Learned-Pattern-Applied
+Run 2 applied auto-detection-exclusion and required_if lessons from Run 1; win_package PR #907 passed all CI first try (0 code fixes needed)
+
+*Source: Team insight from Hen Yaish*
+
+### Pattern: PowerShell-Error-Handling
+Never use $Error.Clear(), prefer try/catch over ErrorAction, use SilentlyContinue not Ignore, don't set $ErrorActionPreference globally
+
+*Source: Team insight from Hen Yaish*
+
+### Pattern: PowerShell-Import-Conventions
+Use #AnsibleRequires not #Requires, import Ansible.Basic not Ansible.ModuleUtils.Legacy, no -Module flag, standardize imports
+
+*Source: Team insight from Hen Yaish*
+
+### Operational: Fork-PR-CI-Workflow
+For enhancement mode: fetch origin, branch from main, push to fork remote, create PR, monitor Azure Pipelines, fix+push in separate commits
+
+*Source: Team insight from Hen Yaish*
+
+### Operational: PR-Lifecycle
+Always check gh pr view --json state before pushing CI fixes; PRs can be closed during iteration, use gh pr reopen to restore
+
+*Source: Team insight from Hen Yaish*
+
+### Operational: Azure-Pipelines-Logs
+ansible org Azure DevOps logs are public; extract buildId from check URL, fetch via REST API without auth for targeted error analysis
+
+*Source: Team insight from Hen Yaish*
+
+### Operational: CI-Fix-Commits
+Use separate commits for each CI fix (not amend); gives reviewers traceability of failure-fix cycle
+
+*Source: Team insight from Hen Yaish*
+
+### Operational: Version-Bump-Enhancement
+Minor version bump for new features (3.6.1->3.7.0); update galaxy.yml + CHANGELOG.rst + changelogs/changelog.yaml in same feature commit
+
+*Source: Team insight from Hen Yaish*
+
+### Operational: Single-vs-Multi-PR
+Run 1 used single PR (#905 with both modules); Run 2 split to two PRs (#906, #907); split approach is superior for review isolation and CI stability
+
+*Source: Team insight from Hen Yaish*
+
+### Operational: CI-Pass-Rate-Improvement
+Run 1: 35/36 with 2 code fixes needed; Run 2: PR #907 all green first try, PR #906 56/58 (2 infra timeouts only, 0 code fixes)
+
+*Source: Team insight from Hen Yaish*
+
+### Operational: Winget-CI-Infra-Flake
+PR #906 shows 2 failures both on "Windows 1 WinPS Server 2025 SSH Key" with 50min timeout; this is a known Azure CI infrastructure flake, not code
+
+*Source: Team insight from Hen Yaish*
+
+### Operational: Enhancement-Duration
+Run 2 total ~3 hours (vs Run 1 ~6 hours); one-PR-per-module with applied learnings cut delivery time in half
+
+*Source: Team insight from Hen Yaish*
+
+### Operational: Zero-Intervention
+Both runs achieved zero user intervention after Phase 0; enhancement mode is fully autonomous for well-scoped epics
+
+*Source: Team insight from Hen Yaish*
+
+### Operational: Code-Quality-Pre-PR
+Check orphaned files, undefined functions, unused imports, author consistency, test quality before creating PR
+
+*Source: Team insight from Hen Yaish*

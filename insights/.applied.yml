@@ -1,22 +1,265 @@
-# Insights Application Tracking
-# This file tracks which insights have been applied to which agents
-# Automatically maintained by insights-sync-specialist
+# Applied Insights Tracking
+# This file tracks which insights from quick-reference.log have been applied to agent instructions
+# Format: insight_key -> application metadata
+# Automatically managed by insights-sync-specialist
 
-insights: {}
+applied_insights:
+  # Platform Insights
+  Platform-Windows-Winget-SYSTEM-Path:
+    applied_to:
+      - module-worker
+      - enhancement-specialist
+    applied_date: "2026-06-10"
+    applied_by: "insights-sync-specialist"
+    source_epic: "ACA-6275"
+    
+  Platform-Windows-PackageMgmt-NuGet:
+    applied_to:
+      - module-worker
+      - enhancement-specialist
+    applied_date: "2026-06-10"
+    applied_by: "insights-sync-specialist"
+    source_epic: "ACA-6275"
+    
+  Platform-Windows-PackageMgmt-PSGallery:
+    applied_to:
+      - module-worker
+      - enhancement-specialist
+    applied_date: "2026-06-10"
+    applied_by: "insights-sync-specialist"
+    source_epic: "ACA-6275"
+    
+  Platform-Windows-Doc-Format:
+    applied_to:
+      - module-worker
+      - enhancement-specialist
+    applied_date: "2026-06-10"
+    applied_by: "insights-sync-specialist"
+    source_epic: "ACA-6275"
+    
+  Platform-Winget-MSIX-Access-Denied:
+    applied_to:
+      - module-worker
+      - enhancement-specialist
+    applied_date: "2026-06-10"
+    applied_by: "insights-sync-specialist"
+    source_epic: "ACA-6275"
+    
+  Platform-Winget-Execution-Check:
+    applied_to:
+      - module-worker
+      - enhancement-specialist
+    applied_date: "2026-06-10"
+    applied_by: "insights-sync-specialist"
+    source_epic: "ACA-6275"
+    
+  Platform-Server2025-SSH-Timeout:
+    applied_to:
+      - module-worker
+      - enhancement-specialist
+      - ci-validation-specialist
+    applied_date: "2026-06-10"
+    applied_by: "insights-sync-specialist"
+    source_epic: "ACA-6275"
+    
+  Platform-PackageMgmt-No-CI-Regression:
+    applied_to:
+      - module-worker
+      - enhancement-specialist
+    applied_date: "2026-06-10"
+    applied_by: "insights-sync-specialist"
+    source_epic: "ACA-6275"
+    
+  # Pattern Insights
+  Pattern-Provider-Auto-Detection:
+    applied_to:
+      - module-worker
+      - enhancement-specialist
+      - refactor-specialist
+    applied_date: "2026-06-10"
+    applied_by: "insights-sync-specialist"
+    source_epic: "ACA-6275"
+    
+  Pattern-Required-If-Limitations:
+    applied_to:
+      - module-worker
+      - enhancement-specialist
+      - refactor-specialist
+    applied_date: "2026-06-10"
+    applied_by: "insights-sync-specialist"
+    source_epic: "ACA-6275"
+    
+  Pattern-Failure-Test-Regression:
+    applied_to:
+      - module-worker
+      - enhancement-specialist
+      - refactor-specialist
+      - ci-validation-specialist
+    applied_date: "2026-06-10"
+    applied_by: "insights-sync-specialist"
+    source_epic: "ACA-6275"
+    
+  Pattern-Provider-Isolation:
+    applied_to:
+      - module-worker
+      - enhancement-specialist
+      - refactor-specialist
+    applied_date: "2026-06-10"
+    applied_by: "insights-sync-specialist"
+    source_epic: "ACA-6275"
+    
+  Pattern-One-PR-Per-Module:
+    applied_to:
+      - enhancement-specialist
+      - release-specialist
+    applied_date: "2026-06-10"
+    applied_by: "insights-sync-specialist"
+    source_epic: "ACA-6275"
+    
+  Pattern-Version-Both-PRs-Same:
+    applied_to:
+      - enhancement-specialist
+    applied_date: "2026-06-10"
+    applied_by: "insights-sync-specialist"
+    source_epic: "ACA-6275"
+    
+  Pattern-Separate-Branches:
+    applied_to:
+      - enhancement-specialist
+      - release-specialist
+    applied_date: "2026-06-10"
+    applied_by: "insights-sync-specialist"
+    source_epic: "ACA-6275"
+    
+  Pattern-CI-Fix-Separate-Commit:
+    applied_to:
+      - enhancement-specialist
+    applied_date: "2026-06-10"
+    applied_by: "insights-sync-specialist"
+    source_epic: "ACA-6275"
+    
+  Pattern-Learned-Pattern-Applied:
+    applied_to:
+      - enhancement-specialist
+    applied_date: "2026-06-10"
+    applied_by: "insights-sync-specialist"
+    source_epic: "ACA-6275"
+    
+  Pattern-PowerShell-Error-Handling:
+    applied_to:
+      - module-worker
+      - enhancement-specialist
+      - refactor-specialist
+    applied_date: "2026-06-10"
+    applied_by: "insights-sync-specialist"
+    source_epic: "ACA-6275"
+    
+  Pattern-PowerShell-Import-Conventions:
+    applied_to:
+      - module-worker
+      - enhancement-specialist
+      - refactor-specialist
+    applied_date: "2026-06-10"
+    applied_by: "insights-sync-specialist"
+    source_epic: "ACA-6275"
+    
+  # Operational Insights
+  Operational-Fork-PR-CI-Workflow:
+    applied_to:
+      - enhancement-specialist
+      - release-specialist
+    applied_date: "2026-06-10"
+    applied_by: "insights-sync-specialist"
+    source_epic: "ACA-6275"
+    
+  Operational-PR-Lifecycle:
+    applied_to:
+      - enhancement-specialist
+      - release-specialist
+      - ci-validation-specialist
+    applied_date: "2026-06-10"
+    applied_by: "insights-sync-specialist"
+    source_epic: "ACA-6275"
+    
+  Operational-Azure-Pipelines-Logs:
+    applied_to:
+      - enhancement-specialist
+      - ci-validation-specialist
+    applied_date: "2026-06-10"
+    applied_by: "insights-sync-specialist"
+    source_epic: "ACA-6275"
+    
+  Operational-CI-Fix-Commits:
+    applied_to:
+      - enhancement-specialist
+      - release-specialist
+      - ci-validation-specialist
+    applied_date: "2026-06-10"
+    applied_by: "insights-sync-specialist"
+    source_epic: "ACA-6275"
+    
+  Operational-Version-Bump-Enhancement:
+    applied_to:
+      - enhancement-specialist
+      - release-specialist
+    applied_date: "2026-06-10"
+    applied_by: "insights-sync-specialist"
+    source_epic: "ACA-6275"
+    
+  Operational-Single-vs-Multi-PR:
+    applied_to:
+      - enhancement-specialist
+      - release-specialist
+    applied_date: "2026-06-10"
+    applied_by: "insights-sync-specialist"
+    source_epic: "ACA-6275"
+    
+  Operational-CI-Pass-Rate-Improvement:
+    applied_to:
+      - enhancement-specialist
+      - ci-validation-specialist
+    applied_date: "2026-06-10"
+    applied_by: "insights-sync-specialist"
+    source_epic: "ACA-6275"
+    
+  Operational-Winget-CI-Infra-Flake:
+    applied_to:
+      - enhancement-specialist
+      - ci-validation-specialist
+    applied_date: "2026-06-10"
+    applied_by: "insights-sync-specialist"
+    source_epic: "ACA-6275"
+    
+  Operational-Enhancement-Duration:
+    applied_to:
+      - enhancement-specialist
+    applied_date: "2026-06-10"
+    applied_by: "insights-sync-specialist"
+    source_epic: "ACA-6275"
+    
+  Operational-Zero-Intervention:
+    applied_to:
+      - enhancement-specialist
+    applied_date: "2026-06-10"
+    applied_by: "insights-sync-specialist"
+    source_epic: "ACA-6275"
+    
+  Operational-Code-Quality-Pre-PR:
+    applied_to:
+      - enhancement-specialist
+      - release-specialist
+    applied_date: "2026-06-10"
+    applied_by: "insights-sync-specialist"
+    source_epic: "ACA-6275"
 
-# Example structure:
-# insights:
-#   Platform|REST-API-Rate-Limiting:
-#     applied_to:
-#       - module-worker
-#       - enhancement-specialist
-#     applied_date: 2026-06-03
-#     created_by: "Hen Yaish"
-#     created_commit: "abc123"
-#
-#   Pattern|Provider-Auto-Detection:
-#     applied_to:
-#       - module-worker
-#     applied_date: 2026-06-01
-#     created_by: "Hen Yaish"
-#     created_commit: "def456"
+# Statistics
+total_insights: 37
+total_applied: 37
+agents_updated:
+  - module-worker
+  - enhancement-specialist
+  - refactor-specialist
+  - release-specialist
+  - ci-validation-specialist
+last_sync: "2026-06-10"
+sync_mode: "bulk"
