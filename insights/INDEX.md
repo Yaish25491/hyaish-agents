@@ -1,8 +1,8 @@
 # Insights Index
 
-**Last Updated**: 2026-06-03  
-**Total Insights**: 4 (detailed) + 14 quick-reference entries from Run 2  
-**Version**: 1.2.0
+**Last Updated**: 2026-06-10  
+**Total Insights**: 7 (detailed) + 17 quick-reference entries  
+**Version**: 1.3.0
 
 ## Quick Navigation
 
@@ -69,6 +69,14 @@ Operational|Hung-Installer|Monitor log filesize every 10s, kill if no growth for
 #### [Ansible required_if Limitations](pattern-insights/required-if-limitations.md)
 **Added**: 2026-06-02 | **Applies To**: Multi-provider modules with conditional validation | **Impact**: Preserves backward-compatible error messages when moving to manual validation
 
+### PowerShell Best Practices
+
+#### [PowerShell Error Handling Best Practices](pattern-insights/powershell-error-handling-best-practices.md)
+**Added**: 2026-06-10 | **Applies To**: All Windows PowerShell modules | **Impact**: Prevents loss of stack traces, improves debugging, follows community standards
+
+#### [PowerShell Import Conventions](pattern-insights/powershell-import-conventions.md)
+**Added**: 2026-06-10 | **Applies To**: All Ansible Windows modules | **Impact**: Fixes import errors, standardizes module structure
+
 ### Idempotency Patterns
 *Coming from production runs*
 
@@ -86,6 +94,9 @@ Operational|Hung-Installer|Monitor log filesize every 10s, kill if no growth for
 
 #### [Enhancement Mode CI/CD Workflow](operational-insights/enhancement-mode-cicd-workflow.md)
 **Added**: 2026-06-02 | **Applies To**: Fork-based PR workflows, Azure Pipelines CI | **Impact**: Documents full delivery lifecycle including PR management and targeted CI fix strategies
+
+#### [Code Quality Pre-PR Checks](operational-insights/code-quality-pre-pr-checks.md)
+**Added**: 2026-06-10 | **Applies To**: All collection builds before PR creation | **Impact**: Catches 9+ blockers and 14+ warnings before maintainer review
 
 ### Prerequisite Installation
 *Coming from production runs*
@@ -120,12 +131,13 @@ After each run:
 
 ### By Category
 - Platform Insights: 1 detailed + 4 quick-ref entries
-- Pattern Insights: 2 detailed + 5 quick-ref entries
-- Operational Insights: 1 detailed + 5 quick-ref entries
+- Pattern Insights: 4 detailed + 7 quick-ref entries
+- Operational Insights: 2 detailed + 6 quick-ref entries
 
 ### Top Contributors
 - **ACA-6275 Run 1** (ansible.windows, 2026-06-02): 4 detailed insights, 13 quick-ref entries
 - **ACA-6275 Run 2** (ansible.windows, 2026-06-03): 14 quick-ref entries (one-PR-per-module strategy)
+- **SCVMM Code Review** (microsoft.scvmm, 2026-06-10): 3 detailed insights, 3 quick-ref entries from maintainer feedback
 
 ### Success Rate Improvements
 - **ACA-6275 Run 1**: 35/36 CI checks (97.2%), 2 code fixes needed, single PR strategy

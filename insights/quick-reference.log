@@ -47,3 +47,6 @@ Operational|CI-Pass-Rate-Improvement|Run 1: 35/36 with 2 code fixes needed; Run 
 Operational|Winget-CI-Infra-Flake|PR #906 shows 2 failures both on "Windows 1 WinPS Server 2025 SSH Key" with 50min timeout; this is a known Azure CI infrastructure flake, not code
 Operational|Enhancement-Duration|Run 2 total ~3 hours (vs Run 1 ~6 hours); one-PR-per-module with applied learnings cut delivery time in half
 Operational|Zero-Intervention|Both runs achieved zero user intervention after Phase 0; enhancement mode is fully autonomous for well-scoped epics
+Pattern|PowerShell-Error-Handling|Never use $Error.Clear(), prefer try/catch over ErrorAction, use SilentlyContinue not Ignore, don't set $ErrorActionPreference globally
+Pattern|PowerShell-Import-Conventions|Use #AnsibleRequires not #Requires, import Ansible.Basic not Ansible.ModuleUtils.Legacy, no -Module flag, standardize imports
+Operational|Code-Quality-Pre-PR|Check orphaned files, undefined functions, unused imports, author consistency, test quality before creating PR
