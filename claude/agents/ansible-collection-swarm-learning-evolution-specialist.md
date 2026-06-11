@@ -39,11 +39,34 @@ Based on learnings, **immediately update agent files** in current run:
 
 ### 4. Share Insights with Team (NEW)
 
+**CRITICAL - Centralized Insights Repository**:
+
+All insights MUST be written to the hyaish-agents repository, NOT the current working directory.
+
+**Find the insights directory**:
+```bash
+# Find hyaish-agents repository (check common locations)
+if [ -d ~/.claude/agents/hyaish-agents/insights ]; then
+  INSIGHTS_DIR=~/.claude/agents/hyaish-agents/insights
+elif [ -d ~/Documents/Git/hyaish-agents/insights ]; then
+  INSIGHTS_DIR=~/Documents/Git/hyaish-agents/insights
+else
+  # Search for hyaish-agents repository
+  INSIGHTS_DIR=$(find ~ -type d -name "hyaish-agents" -path "*/insights" 2>/dev/null | head -1)
+  if [ -z "$INSIGHTS_DIR" ]; then
+    echo "❌ Cannot find hyaish-agents repository - insights will not be saved"
+    exit 1
+  fi
+fi
+
+echo "📝 Writing insights to: $INSIGHTS_DIR"
+```
+
 **Two-Tier Logging System**:
 
 #### Tier 1: Quick Reference (Always Do This)
 
-Append one-liner to repository root: `/insights/quick-reference.log`
+Append one-liner to centralized repository: `$INSIGHTS_DIR/quick-reference.log`
 
 **Format**:
 ```
@@ -76,9 +99,9 @@ Operational|Hung-Installer|Monitor log filesize every 10s, kill if no growth for
 
 For **important or complex lessons**, create detailed markdown file:
 
-**Path**: `/insights/{category}-insights/{date}_{subcategory}.md`
+**Path**: `$INSIGHTS_DIR/{category}-insights/{date}_{subcategory}.md`
 
-**Example**: `/insights/platform-insights/2024-05-28_rest-api-rate-limiting.md`
+**Example**: `$INSIGHTS_DIR/platform-insights/2024-05-28_rest-api-rate-limiting.md`
 
 **Template**:
 ```markdown
@@ -118,7 +141,7 @@ For **important or complex lessons**, create detailed markdown file:
 [List of generic characteristics where this applies]
 ```
 
-**Then update**: `/insights/INDEX.md` with new entry
+**Then update**: `$INSIGHTS_DIR/INDEX.md` with new entry
 
 ### 5. Maintain Local Lessons Database
 
@@ -203,25 +226,29 @@ In collection workspace: `docs/lessons_learned.md`:
 
 **Step 3 - Share Quick Reference**:
 ```bash
-# Append to /insights/quick-reference.log
-echo "Platform|REST-API-Rate-Limiting|Check 429 status, use Retry-After header, exponential backoff 60→120→240s" >> /insights/quick-reference.log
+# Append to centralized insights repository
+echo "Platform|REST-API-Rate-Limiting|Check 429 status, use Retry-After header, exponential backoff 60→120→240s" >> $INSIGHTS_DIR/quick-reference.log
 ```
 
 **Step 4 - Create Detailed Insight** (high severity):
 ```bash
-# Create /insights/platform-insights/2024-05-28_rest-api-rate-limiting.md
+# Create in centralized insights repository
+# File: $INSIGHTS_DIR/platform-insights/2024-05-28_rest-api-rate-limiting.md
 # Include: problem, solution, code examples, metrics
 ```
 
 **Step 5 - Update Index**:
 ```bash
-# Update /insights/INDEX.md
+# Update centralized index
+# File: $INSIGHTS_DIR/INDEX.md
 # Add link to new insight file
 ```
 
 **Step 6 - Push Insights to Remote (CRITICAL for Team Learning)**:
 ```bash
-cd ~/Documents/Git/hyaish-agents
+# Navigate to hyaish-agents repository (insights are already written there)
+REPO_DIR=$(dirname "$INSIGHTS_DIR")
+cd "$REPO_DIR"
 
 # Check if we're in a git repository
 if [ -d .git ]; then
