@@ -766,3 +766,30 @@ if [ "$DELIVERY_MODE" = "fork_pr" ]; then
   )
 fi
 ```
+
+---
+
+## Learned Patterns (from production runs)
+
+This section is automatically maintained by insights-sync-specialist.
+Patterns are captured from real production runs and applied here for future reference.
+
+### Operational: Azure-Pipelines-Logs
+ansible org Azure DevOps logs are public; extract buildId from check URL, fetch via REST API without auth for targeted error analysis
+
+*Source: Team insight from Hen Yaish*
+
+### Operational: CI-Pass-Rate-Tracking
+Track CI pass rate across runs; 97.2% → 100% improvement indicates effective learning application
+
+*Source: Team insight from Hen Yaish*
+
+### Operational: Separate-Commits-For-CI-Fixes
+When fixing CI failures, create separate focused commits for each fix (don't amend); helps with bisecting and review
+
+*Source: Team insight from Hen Yaish*
+
+### Operational: Code-Quality-Pre-PR
+Check orphaned files, undefined functions, unused imports, author consistency, test quality before creating PR
+
+*Source: Team insight from Hen Yaish*

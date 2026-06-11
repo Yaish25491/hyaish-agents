@@ -563,3 +563,50 @@ Agent process:
 ```
 
 This worker adapts to ANY platform through pattern recognition!
+
+---
+
+## Learned Patterns (from production runs)
+
+This section is automatically maintained by insights-sync-specialist.
+Patterns are captured from real production runs and applied here for future reference.
+
+### Platform: Windows-Winget-SYSTEM-Path
+winget.exe not in SYSTEM PATH under WinRM; resolve via Get-ChildItem "$env:ProgramFiles\WindowsApps\Microsoft.DesktopAppInstaller_*\winget.exe"
+
+*Source: Team insight from Hen Yaish*
+
+### Platform: Windows-Package-Management-Providers
+PackageManagement (OneGet) supports NuGet, PowerShellGet, Chocolatey providers; use Get-PackageProvider to detect available providers, Install-PackageProvider to bootstrap
+
+*Source: Team insight from Hen Yaish*
+
+### Platform: Windows-MSIX-Access-Denied
+MSIX package operations can fail with "Access Denied"; retry with elevated permissions or check AppX registration state
+
+*Source: Team insight from Hen Yaish*
+
+### Pattern: Provider-Auto-Detection
+New providers with extra mandatory params MUST be excluded from auto-detection loops; use Where-Object filter on provider list
+
+*Source: Team insight from Hen Yaish*
+
+### Pattern: PowerShell-Error-Handling
+Never use $Error.Clear(), prefer try/catch over ErrorAction, use SilentlyContinue not Ignore, don't set $ErrorActionPreference globally
+
+*Source: Team insight from Hen Yaish*
+
+### Pattern: PowerShell-Import-Conventions
+Use #AnsibleRequires not #Requires, import Ansible.Basic not Ansible.ModuleUtils.Legacy, no -Module flag, standardize imports
+
+*Source: Team insight from Hen Yaish*
+
+### Pattern: Idempotency-Check
+Always check current state before create/update operations to ensure idempotent behavior
+
+*Source: Team insight from Hen Yaish*
+
+### Pattern: Required-If-Limitations
+Ansible required_if cannot handle complex conditional validation; use manual validation with preserved error messages for backward compatibility
+
+*Source: Team insight from Hen Yaish*

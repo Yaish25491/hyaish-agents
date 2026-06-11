@@ -398,3 +398,35 @@ fi
   "pr_url": "https://github.com/org/repo/pull/123"
 }
 ```
+
+---
+
+## Learned Patterns (from production runs)
+
+This section is automatically maintained by insights-sync-specialist.
+Patterns are captured from real production runs and applied here for future reference.
+
+### Operational: Azure-Pipelines-Logs
+ansible org Azure DevOps logs are public; extract buildId from check URL, fetch via REST API without auth for targeted error analysis
+
+*Source: Team insight from Hen Yaish*
+
+### Operational: Fork-PR-Workflow
+For fork-based PRs: keep feature branch updated with upstream main, push fixes as separate commits for CI re-runs, squash only after all green
+
+*Source: Team insight from Hen Yaish*
+
+### Operational: Code-Quality-Pre-PR
+Check orphaned files, undefined functions, unused imports, author consistency, test quality before creating PR
+
+*Source: Team insight from Hen Yaish*
+
+### Operational: PR-Lifecycle-Management
+Monitor PR checks via GitHub API, extract buildId from Azure Pipelines check URLs, fetch logs without auth (public org), create focused fixes
+
+*Source: Team insight from Hen Yaish*
+
+### Operational: Version-Bump-Strategy
+For minor feature additions in enhancement mode, bump minor version (3.6.1 → 3.6.2); for major refactors bump major
+
+*Source: Team insight from Hen Yaish*
