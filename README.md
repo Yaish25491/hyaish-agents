@@ -64,7 +64,7 @@ Template-based approach for Windows Server environments (SCVMM, Hyper-V, Exchang
 
 **One-Line Install** (recommended):
 ```bash
-cd ~/.claude/agents && git clone https://github.com/hyaish/hyaish-agents.git && bash hyaish-agents/install.sh
+cd ~/.claude/agents && git clone https://github.com/Yaish25491/hyaish-agents.git && bash hyaish-agents/install.sh
 ```
 
 **Or via Plugin Marketplace** (after setup):
@@ -79,12 +79,11 @@ cd ~/.claude/agents && git clone https://github.com/hyaish/hyaish-agents.git && 
 **Or Manual**:
 ```bash
 cd ~/.claude/agents
-git clone https://github.com/hyaish/hyaish-agents.git
-ln -s hyaish-agents/claude hyaish-agents-plugin
-cd hyaish-agents/claude && ./verify.sh
+git clone https://github.com/Yaish25491/hyaish-agents.git
+cd hyaish-agents && bash install.sh
 ```
 
-See [MARKETPLACE.md](MARKETPLACE.md) for details on plugin marketplace setup.
+See [docs/marketplace.md](docs/marketplace.md) for details on plugin marketplace setup.
 
 ### Usage
 
@@ -108,9 +107,10 @@ Agent({
 
 ## 📖 Documentation
 
-- **[Installation Guide](claude/INSTALL.md)** - How to install for your team
-- **[Quick Start (Universal Swarm)](claude/ansible-collection-swarm/QUICKSTART.md)** - Build your first collection in 5 minutes
-- **[Getting Started (Universal Swarm)](claude/ansible-collection-swarm/GETTING-STARTED.md)** - Comprehensive guide
+- **[Getting Started](GETTING-STARTED.md)** - Start here! Build your first collection in 10 minutes
+- **[Installation Guide](claude/INSTALL.md)** - Detailed installation options
+- **[Quick Start (Universal Swarm)](claude/ansible-collection-swarm/QUICKSTART.md)** - 5-minute quick reference
+- **[Comprehensive Guide](claude/ansible-collection-swarm/GETTING-STARTED.md)** - Deep dive into all features
 - **[Publishing Guide](claude/PUBLISH.md)** - How to publish this plugin
 
 ## 🎓 Real-World Examples
@@ -248,7 +248,7 @@ Contributions welcome! To add a new swarm:
 3. Update `claude/package.json` and `claude/verify.sh`
 4. Submit pull request
 
-See [Contributing Guide](CONTRIBUTING.md) (coming soon)
+See [CONTRIBUTING.md](CONTRIBUTING.md) for contribution guidelines.
 
 ## 📝 License
 
@@ -256,15 +256,15 @@ MIT License - See [LICENSE](LICENSE)
 
 ## 👥 Author
 
-**Hyaish**
+**Hen Yaish**
 
-- GitHub: [@hyaish](https://github.com/hyaish)
-- Email: hyaish@example.com
+- GitHub: [@Yaish25491](https://github.com/Yaish25491)
+- Organization: Red Hat
 
 ## 🌟 Support
 
-- **Issues**: [GitHub Issues](https://github.com/hyaish/hyaish-agents/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/hyaish/hyaish-agents/discussions)
+- **Issues**: [GitHub Issues](https://github.com/Yaish25491/hyaish-agents/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/Yaish25491/hyaish-agents/discussions)
 - **Documentation**: See `claude/` directory
 
 ## 📈 Roadmap
@@ -284,9 +284,9 @@ If you find this useful, please star the repository!
 ---
 
 **Quick Links**:
+- [Getting Started](GETTING-STARTED.md) ⭐ **Start here!**
 - [Installation](claude/INSTALL.md)
 - [Quick Start](claude/ansible-collection-swarm/QUICKSTART.md)
 - [Documentation](claude/)
-- [Examples](claude/ansible-collection-swarm/GETTING-STARTED.md)
 
 **Current Version**: 1.0.0

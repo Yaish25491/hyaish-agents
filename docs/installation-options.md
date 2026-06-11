@@ -7,7 +7,7 @@ Your team can install Hyaish Agents using **the same methods as Superpowers**!
 ### Method 1: One-Line Install (Easiest - Available Now)
 
 ```bash
-cd ~/.claude/agents && git clone https://github.com/hyaish/hyaish-agents.git && bash hyaish-agents/install.sh
+cd ~/.claude/agents && git clone https://github.com/Yaish25491/hyaish-agents.git && bash hyaish-agents/install.sh
 ```
 
 **What it does**:
@@ -42,7 +42,7 @@ Just like Superpowers uses `/plugin install superpowers@claude-plugins-official`
 
 ```bash
 cd ~/.claude/agents
-git clone https://github.com/hyaish/hyaish-agents.git
+git clone https://github.com/Yaish25491/hyaish-agents.git
 ln -s hyaish-agents/claude hyaish-agents-plugin
 cd hyaish-agents/claude
 ./verify.sh
@@ -56,7 +56,7 @@ cd hyaish-agents/claude
 
 | Feature | Superpowers | Hyaish Agents |
 |---------|-------------|---------------|
-| **Official Registry** | `/plugin install superpowers@claude-plugins-official` | Coming soon (after submission) |
+| **Official Registry** | `/plugin install superpowers@claude-plugins-official` | Available after marketplace submission |
 | **Personal Marketplace** | `/plugin marketplace add obra/superpowers-marketplace`<br>`/plugin install superpowers@superpowers-marketplace` | `/plugin marketplace add hyaish/hyaish-agents`<br>`/plugin install hyaish-agents@hyaish` |
 | **Manual Install** | `git clone` + setup | `git clone` + `bash install.sh` |
 | **Slash Commands** | `/tdd`, `/brainstorming`, etc. | `/ansible-collection-swarm`, `/windows-collection-swarm` |
@@ -70,7 +70,7 @@ cd hyaish-agents/claude
 
 **Your team installs via**:
 ```bash
-cd ~/.claude/agents && git clone https://github.com/hyaish/hyaish-agents.git && bash hyaish-agents/install.sh
+cd ~/.claude/agents && git clone https://github.com/Yaish25491/hyaish-agents.git && bash hyaish-agents/install.sh
 ```
 
 **Usage**:
@@ -148,7 +148,7 @@ git push origin v1.0.0
      "name": "hyaish-agents",
      "version": "1.0.0",
      "description": "Intelligent multi-agent swarms for automation",
-     "repository": "https://github.com/hyaish/hyaish-agents",
+     "repository": "https://github.com/Yaish25491/hyaish-agents",
      "pluginDirectory": "claude",
      "installPath": "hyaish-agents-plugin"
    }
@@ -197,7 +197,7 @@ git push origin v1.0.0
 
 **Start with Method 1** (one-line install):
 ```bash
-cd ~/.claude/agents && git clone https://github.com/hyaish/hyaish-agents.git && bash hyaish-agents/install.sh
+cd ~/.claude/agents && git clone https://github.com/Yaish25491/hyaish-agents.git && bash hyaish-agents/install.sh
 ```
 
 **Why**:
